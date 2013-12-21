@@ -2,6 +2,7 @@ package PlayerData
 import MultiboardClass
 import GameConstants
 import LinkedList
+import Hero
 
 public int playercount = 0
 
@@ -22,6 +23,7 @@ public class PlayerData //just the player's (constant) stuff
 	int XP = 40
 	effect lvlfx
 	
+	Hero hero
 	boolean picked = false	
 	boolean camLock = false
 
@@ -54,6 +56,7 @@ public class PlayerData //just the player's (constant) stuff
 				if p2.gameId > gameId
 					p2.gameId--
 		playercount--
+		hero.terminate()
 		
 public function isPlayerEscaper(player p) returns boolean 
 	if GetPlayerId(p) < 8

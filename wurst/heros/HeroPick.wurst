@@ -23,13 +23,12 @@ function onHeroBuy()
 	let p = GetTriggerPlayer()
 	let u = GetSoldUnit()
 	let id = u.getTypeId()
-	Hero h = null
 	pData[p.getId()].pickdum.remove()
 	switch id
 		case MIMIC_HERO_ID
-			h = new Mimic(u.getPos3fake(), u.getOwner())
+			pData[p.getId()].hero = new Mimic(u.getPos3fake(), u.getOwner())
 			
-	SelectUnitForPlayerSingle(h.actor, h.owner)
+	SelectUnitForPlayerSingle(pData[p.getId()].hero.actor, p)
 	u.remove()
 	
 init

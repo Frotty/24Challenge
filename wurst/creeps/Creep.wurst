@@ -1,11 +1,22 @@
 package Creep
 import PhysicalUnitEntity
+import CustomExp
 
 public class Creep extends PhysicalUnitEntity
+	static trigger deathTrig = CreateTrigger()
 
 	construct(vec3 pos, int id, player owner, vec2 target)
 		super(pos, createUnit(owner, id, pos, pos.angleTo2d(target)))
 		actor.issuePointOrder("attack", target)
+		deathTrig.registerUnitEvent(actor, EVENT_UNIT_DEATH)
+		
+
+function onDeath()
+	let data = UnitEntity.getForUnit(GetTriggerUnit())
+	data.terminate()
+
+init
+	Creep.deathTrig.addAction(function onDeath)
 
 		
 	

@@ -1,7 +1,8 @@
 package PhysicalUnitEntity
-import Entity
+import public Entity
 import Terrain
 import GameConstants
+
 public class PhysicalUnitEntity extends UnitEntity
 	boolean flying = true
 	real terrainZ = 0.

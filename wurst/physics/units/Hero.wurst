@@ -9,18 +9,20 @@ Sound array killSounds
 
 LinkedList<int> intPool = new LinkedList<int>()
 
-constant int BUFF_REVERSE_MOVEMENT = 'ASDF'
+constant int BUFF_REVERSE_MOVEMENT = 'B000'
 
 public abstract class Hero extends PhysicalUnitEntity
 	vec3 lastPos
 	boolean userorder = true
 	static trigger castTrig = CreateTrigger()
+	static trigger channelTrig = CreateTrigger()
 	static trigger orderTrig = CreateTrigger()
 	static trigger deathTrig = CreateTrigger()
 	
 	construct(vec3 pos, unit u)
 		super(pos, u)
 		castTrig.registerUnitEvent(actor, EVENT_UNIT_SPELL_EFFECT)
+		channelTrig.registerUnitEvent(actor, EVENT_UNIT_SPELL_ENDCAST)
 		orderTrig.registerUnitEvent(actor, EVENT_UNIT_ISSUED_POINT_ORDER)
 		orderTrig.registerUnitEvent(actor, EVENT_UNIT_ISSUED_TARGET_ORDER)
 		deathTrig.registerUnitEvent(actor, EVENT_UNIT_DEATH)
@@ -29,8 +31,15 @@ public abstract class Hero extends PhysicalUnitEntity
 		let u = GetTriggerUnit()
 		let data = u.getUserData() castTo Hero
 		data.onCast(GetSpellAbilityId(), vec2(GetSpellTargetX(), GetSpellTargetY()), GetSpellTargetUnit(), GetUnitAbilityLevel(u, GetSpellAbilityId()))
+		
+	static function evaluateFinish()
+		let u = GetTriggerUnit()
+		let data = u.getUserData() castTo Hero
+		data.onSpellEndCast(GetSpellAbilityId(), GetUnitAbilityLevel(u, GetSpellAbilityId()))
 	
 	abstract function onCast(int id, vec2 tpos, unit target, int lvl)
+	
+	abstract function onSpellEndCast(int id, int lvl)
 	
 	static function evaluateOrder()
 		if(GetTriggerUnit().hasAbility(BUFF_REVERSE_MOVEMENT))
@@ -45,7 +54,13 @@ public abstract class Hero extends PhysicalUnitEntity
 		else
 			userorder = true
 	
-		
+function revive()
+	let tim = GetExpiredTimer()
+	let data = tim.getData() castTo Hero
+	if data.owner.getId() < 4
+		ReviveHero(data.actor, gg_unit_h000_0000.getX(),gg_unit_h000_0000.getY(), true)
+	else
+		ReviveHero(data.actor, gg_unit_h001_0001.getX(),gg_unit_h001_0001.getY(), true)
 			
 function onHeroDeath()
 	let ddata = GetTriggerUnit().getUserData() castTo Hero
@@ -63,9 +78,12 @@ function onHeroDeath()
 		intPool.add(6)
 		intPool.add(7)
 	DisplayTimedTextToForce(GetPlayersAll(), 15, colorcode[adata.owner.getId()] + adata.owner.getName() + "|r killed " + colorcode[ddata.owner.getId()] + ddata.owner.getName() )
+	getTimer().start((10 + 5. * GetHeroLevel(ddata.actor)), function revive).setData(ddata castTo int)
+
 
 init
 	Hero.castTrig.addAction(function Hero.evaluateCast)
+	Hero.channelTrig.addAction(function Hero.evaluateFinish)
 	Hero.orderTrig.addAction(function Hero.evaluateOrder)
 	Hero.deathTrig.addAction(function onHeroDeath)
 
