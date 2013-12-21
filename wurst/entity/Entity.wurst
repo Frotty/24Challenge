@@ -6,6 +6,7 @@ import Debug
 import Fx
 import Angle
 import public LinkedList
+constant int BUFF_REFLECT_ID = 'B000'
 
 /** Base Entity Class  */
 public abstract class Entity

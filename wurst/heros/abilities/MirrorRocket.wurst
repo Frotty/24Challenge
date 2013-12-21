@@ -1,0 +1,34 @@
+package MirrorRocket
+
+import Entity
+import Hero
+import ProjectileWithCollision
+import LinkedList
+
+public class MirrorRocket extends ProjectileWithCollision
+	unit sample // This is what the missile facing is based on
+	angle facing
+	real spd
+	
+	construct(vec3 pos, real radius, unit hero,real speed,real time, angle xyAngle, string fxpath)
+		super(pos, radius, hero.getOwner(), xyAngle, fxpath)
+		sample = hero
+		spd = speed
+		setSpeed(spd)
+		setTimed(time)
+		
+	function setFacing() returns angle
+		facing = sample.getFacingAngle()+ angle(3.14)
+		return facing
+	
+	override function onCollision(UnitEntity other)
+		if (owner.isEnemyOf(other.owner))
+			sample.damageTarget(other.actor, 100 * 0.8)
+			
+	
+	override function update()
+		setXYAngle(setFacing())
+		setSpeed(spd)
+		super.update()
+		
+	

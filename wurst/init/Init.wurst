@@ -6,6 +6,7 @@ import Debug
 import CreepNode
 import CreepSpawn
 import PreloadList
+import Mimic
 
 vec2 startpos = vec2(-6144,3584)
 
@@ -54,3 +55,6 @@ function preloadNote()
 init
 	getTimer().start(0.01, function initPreload)
 	getTimer().startPeriodic(ANIMATION_PERIOD, function preloadNote)
+	//Mimic hero = new Mimic(vec3(1800,-2800,700), createUnit(Player(1),'H002', vec2(1800,-2800), angle(0)) )
+	//hero = new Mimic(vec3(2400,-2000,700), createUnit(Player(6),'H002', vec2(2400,-2000), angle(0)) )
+	
