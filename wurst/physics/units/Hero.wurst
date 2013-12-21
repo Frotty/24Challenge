@@ -60,10 +60,12 @@ function revive()
 	let data = tim.getData() castTo Hero
 	if data.owner.getId() < 4
 		ReviveHero(data.actor, gg_unit_h000_0000.getX(),gg_unit_h000_0000.getY(), true)
-		CameraSetupApplyForceDuration(gg_cam_ColorStartCam, true, 2.)
+		if GetLocalPlayer() == data.owner
+			CameraSetupApplyForceDuration(gg_cam_ColorStartCam, true, 2.)
 	else
 		ReviveHero(data.actor, gg_unit_h001_0001.getX(),gg_unit_h001_0001.getY(), true)
-		CameraSetupApplyForceDuration(gg_cam_BWStartCam, true, 2.)
+		if GetLocalPlayer() == data.owner
+			CameraSetupApplyForceDuration(gg_cam_BWStartCam, true, 2.)
 	SelectUnitForPlayerSingle(data.actor, data.owner)
 	DestroyTimerDialog(pData[data.owner.getId()].td)
 	tim.release()
@@ -86,6 +88,8 @@ function onHeroDeath()
 	DisplayTimedTextToForce(GetPlayersAll(), 15, colorcode[killer.getOwner().getId()] + killer.getOwner().getName() + "|r killed " + colorcode[ddata.owner.getId()] + ddata.owner.getName() )
 	pData[ddata.owner.getId()].tim = getTimer().start((10 + 5. * GetHeroLevel(ddata.actor)), function revive).setData(ddata castTo int)
 	pData[ddata.owner.getId()].td = CreateTimerDialog(pData[ddata.owner.getId()].tim)
+	TimerDialogSetTitle(pData[ddata.owner.getId()].td, ddata.owner.getName())
+	TimerDialogDisplay(pData[ddata.owner.getId()].td, true)
 
 
 init

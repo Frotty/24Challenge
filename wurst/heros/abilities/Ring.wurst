@@ -1,44 +1,56 @@
 package Ring
-
+import DummyCaster
 import Entity
 import CollisionModule
 import LinkedList
 import TempGroups
+import Terrain
 
-constant int BUFF_INSIDE = 'EEEE'
+constant int BUFF_INSIDE = 'A004'
+constant int BUFF_ID = 'B001'
 
 public class Ring extends FxEntity
-	use CollisionModule
 	LinkedList<unit> unitsinside = new LinkedList<unit>()
+	Table lts = new Table()
+	real duration
 	
-	
-	construct( vec3 pos, real radius, player owner, angle xyAngle, string sfxpath ) //Abilities\\Spells\\Orc\\LiquidFire\\Liquidfire.mdl
+	construct( vec3 pos, real radius, player owner, angle xyAngle, string sfxpath, int lvl ) //Abilities\\Spells\\Orc\\LiquidFire\\Liquidfire.mdl
 		super(pos, radius, owner, xyAngle, sfxpath )
-		checkForCollisions(pos.toVec2())
+		for i = 0 to 19
+			lts.saveLightning(i,(AddLightning("SPLK", false, polarProjectionX(pos.x, radius, (360./20. * i).asAngleDegrees()), polarProjectionY(pos.y, radius, (360./20. * i).asAngleDegrees()),
+									polarProjectionX(pos.x, radius, (360./20. * (i+1)).asAngleDegrees()), polarProjectionY(pos.y, radius, (360./20. * (i+1)).asAngleDegrees())))
+									)
+		let dum = new DummyCaster(BUFF_INSIDE, "silence", owner, false)
+		dum.setLevel(lvl)
+		dum.castOnPoint(pos)
+		duration = 8 + lvl*2.
+		GroupEnumUnitsInRange(ENUM_GROUP, pos.x, pos.y, radius, null)
 		for unit u in ENUM_GROUP
-			unitsinside.add(u)
-			print("BAM added")
-	
-	//This part would re add the entering units, but it doesnt work anyways :/	
-	override function onCollision(UnitEntity other)
-	//		unitsinside.add(other.actor)
-	//		print("BAM added")
-		
-	
-	override function collisionRadius() returns real
-		return radius
+			if UnitEntity.getForUnit(u) != null
+				unitsinside.add(u)
+		ENUM_GROUP.clear()
+
 		
 	override function update()
-		for unit u in unitsinside
+		super.update()
+		for u in unitsinside
 			if distanceBetweenCoords(pos.x,pos.y,u.getX(),u.getY()) > radius+40
 				unitsinside.remove(u)
-				let entity = UnitEntity.getForUnit(GetFilterUnit())
+				let entity = UnitEntity.getForUnit(u)
 				if entity != null
-					entity.pos = pos-(entity.pos-pos)
-					print("BAM removd")
-				else
-					u.setX(pos.x-(u.getX()-pos.x))
-					u.setY(pos.y-(u.getY()-pos.y))
-					print("BAM removd")
-		super.update()
+					entity.setPos(pos-(entity.pos-pos), getTerrainZ(pos.x, pos.y))
+					entity.actor.setFacing((entity.actor.getFacing()-180).asAngleDegrees())
+					entity.addVel(pos.angleTo2d(entity.pos.toVec2()).toVec(10.).toVec3())
+					entity.actor.removeAbility(BUFF_ID)
+
+		duration -= ANIMATION_PERIOD
+		if duration <= 0
+			terminate()
+			destroy unitsinside
+			for i = 0 to 19
+				DestroyLightning(lts.loadLightning(i))
+			destroy lts
+		
+		
+		
 	

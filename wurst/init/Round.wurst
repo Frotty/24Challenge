@@ -9,7 +9,7 @@ int roundCount = 0
 boolean gameRunning = false
 boolean warmupRunning = false
 
-constant real WARUMP_TIME = 2
+constant real WARUMP_TIME = 20
 
 trigger warmupColorTrig 
 trigger warmupBWTrig 
