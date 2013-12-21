@@ -20,22 +20,15 @@ public class CreepNode
 	trigger t = CreateTrigger()
 	
 	static function orderAttack()
-		print("order attack 1")
 		let data = GetTriggerUnit().getUserData() castTo Entity
 		let sdata = GetTriggeringTrigger().getSource().getUserData() castTo CreepNode
-		print("Target" + sdata.target.toString())
-		print("order attack 2")
 		if data instanceof Creep and data.owner == sdata.creepOwner
-			print("order attack is creep")
 			let cdata = data castTo Creep
 			cdata.actor.issuePointOrder("attack", sdata.target)
-			print("order attack ordered")
 	
 	construct(unit dummyNode, vec2 target, player creepOwner, real radius)
 		this.target = target
 		this.creepOwner = creepOwner
-		print("this target " + target.toString())
-		print("this dumjmyNodepos " + dummyNode.getPos3fake().toString())
 		inrangeDummy = createUnit(DUMMY_PLAYER, DUMMY_UNIT_ID, dummyNode.getPos3fake(), angle(0))
 		inrangeDummy.setUserData(this castTo int)
 		t.registerUnitInRangeSource(inrangeDummy, radius)
@@ -49,7 +42,7 @@ public class CreepNode
 public function initCreepNodes()
 	initColorNodes()
 	initBWNodes()
-	print(">>>> " + gg_unit_e001_0013.getPos3fake().toString())
+
 function initColorNodes()
 	node_color_left = new CreepNode(gg_unit_e001_0013, bw_Main, TEAM_ONE_CPU, 128.)
 	node_color_right = new CreepNode(gg_unit_e001_0012, bw_Main, TEAM_ONE_CPU, 128.)
