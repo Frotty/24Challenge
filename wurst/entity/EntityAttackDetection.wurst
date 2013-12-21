@@ -8,12 +8,13 @@ public function registerDmgEvent(unit u)
 	currentDmgTrig.registerUnitEvent(u, EVENT_UNIT_DAMAGED)
 	
 function onDamageEvent() returns boolean
-	let adata = GetAttacker().getUserData() castTo UnitEntity
-	
+	let adata = GetEventDamageSource().getUserData() castTo UnitEntity
+	let ddata = GetTriggerUnit().getUserData() castTo UnitEntity
+	ddata.onDamage(adata)
+	adata.onAttack(ddata)
 	return false
 	
-function refreshTrigger()
+
 	
 init
 	currentDmgTrig.addCondition(Condition(function onDamageEvent))
-	CreateTimer().startPeriodic(600, function refreshTrigger)
