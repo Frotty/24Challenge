@@ -58,7 +58,7 @@ public abstract class Hero extends PhysicalUnitEntity
 function revive()
 	let tim = GetExpiredTimer()
 	let data = tim.getData() castTo Hero
-	if data.owner.getId() < 4
+	if data.owner.getId() < 6
 		ReviveHero(data.actor, gg_unit_h000_0000.getX(),gg_unit_h000_0000.getY(), true)
 		if GetLocalPlayer() == data.owner
 			CameraSetupApplyForceDuration(gg_cam_ColorStartCam, true, 2.)

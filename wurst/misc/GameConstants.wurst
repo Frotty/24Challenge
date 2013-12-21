@@ -1,7 +1,7 @@
 package GameConstants
 
 	public constant player TEAM_ONE_CPU = Player(0)
-	public constant player TEAM_TWO_CPU = Player(4)
+	public constant player TEAM_TWO_CPU = Player(6)
 
 
 	public vec3 gravity = vec3(0,0,-0.8)
@@ -22,6 +22,7 @@ package GameConstants
 		colorcode[ 8 ] = "|cff949596" // grau
 		colorcode[ 9 ] = "|cff7DBEF1" // hellblau
 		colorcode[ 10 ] = "|cff0F6145" 
+		colorcode[ 11 ] = "|cff4D2903" 
 
 
 endpackage 

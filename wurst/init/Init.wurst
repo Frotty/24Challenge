@@ -44,7 +44,7 @@ function preloadFinished()
 	FogMaskEnable(true)
 	print(msg + " finished!")
 	for p in players
-		if p.id < 4
+		if p.id < 6
 			if GetLocalPlayer() == p.p
 				CameraSetupApplyForceDuration(gg_cam_ColorStartCam, true, 2.)
 				SelectUnit(gg_unit_h000_0000, true)

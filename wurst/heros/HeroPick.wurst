@@ -8,16 +8,16 @@ public function createPickableHeroes()
 	createAttackerHeroes()
 	createDefenderHeroes()
 	for p in players
-		if p.id < 4
+		if p.id < 6
 			p.pickdum = createUnit(p.p, DUMMY_UNIT_ID, gg_unit_h000_0000.getPos(), angle(0))
 		else
 			p.pickdum = createUnit(p.p, DUMMY_UNIT_ID, gg_unit_h001_0001.getPos(), angle(0))
 			
 function createAttackerHeroes()
-	AddUnitToStock(gg_unit_h000_0000, MIMIC_HERO_ID, 3, 3)
+	AddUnitToStock(gg_unit_h000_0000, MIMIC_HERO_ID, 5, 5)
 
 function createDefenderHeroes()
-	AddUnitToStock(gg_unit_h001_0001, MIMIC_HERO_ID, 3, 3)
+	AddUnitToStock(gg_unit_h001_0001, MIMIC_HERO_ID, 5, 5)
 	
 function onHeroBuy()
 	let p = GetTriggerPlayer()

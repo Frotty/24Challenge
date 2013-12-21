@@ -10,7 +10,7 @@ function onDeath()
 
 	if owner == TEAM_TWO_CPU
 		for p in players
-			if p.id < 4
+			if p.id < 6
 				CustomVictoryBJ(p.p, true, false)
 			else
 				CustomDefeatBJ(p.p, "YOU LOSE!!")
