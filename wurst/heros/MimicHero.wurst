@@ -3,9 +3,11 @@ import PreloadList
 import public Hero
 import MirrorRocket
 import DummyCaster
+import Ring
 
 constant int MIRROR_ROCKET_ID = 'A000'
 constant int REVERSE_ROUTING_ID = 'A001'
+constant int FLIPCIRCLE_ID = 'A003'
 constant int RR_DUMMY_ID = 'A002'
 public constant MIMIC_HERO_ID = 'H002'
 
@@ -26,6 +28,10 @@ public class Mimic extends Hero
 				print("casted rr")
 				rr_temp = tpos
 				print("casted finish")
+			case FLIPCIRCLE_ID
+				print("very much ring")
+				new Ring( vec3(tpos.x,tpos.y,pos.z+40),100. + lvl*50 , owner , angle(0), "Abilities\\Spells\\Orc\\LiquidFire\\Liquidfire.mdl")
+				print("very such wow")
 			default
 				print("not casted")
 				
