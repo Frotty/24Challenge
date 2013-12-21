@@ -135,9 +135,9 @@ abstract public class UnitEntity extends Entity
 		actor.setXY(tpos.x,tpos.y)
 		actor.setFlyHeight(tpos.z - tZ, 0)
 		
-	function onDamage()
+	function onDamage(UnitEntity damager)
 		
-	function onAttack()
+	function onAttack(UnitEntity victim)
 		
 	ondestroy
 		unitEntityCount++
