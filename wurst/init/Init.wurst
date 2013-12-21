@@ -42,9 +42,11 @@ function preloadFinished()
 		if p.id < 4
 			if GetLocalPlayer() == p.p
 				CameraSetupApplyForceDuration(gg_cam_ColorStartCam, true, 2.)
+				SelectUnit(gg_unit_h000_0000, true)
 		else
 			if GetLocalPlayer() == p.p
 				CameraSetupApplyForceDuration(gg_cam_BWStartCam, true, 2.)
+				SelectUnit(gg_unit_h001_0001, true)
 	initGame()
 	
 
