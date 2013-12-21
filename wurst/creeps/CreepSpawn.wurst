@@ -35,7 +35,6 @@ public class Spawner
 		spawnTimer = getTimer()
 		
 	static function spawnUnits()
-		print("spawn units")
 		let tim = GetExpiredTimer()
 		let data = tim.getData() castTo Spawner
 		if data.spawnDummy.getHP() > .405
@@ -78,7 +77,6 @@ public class Spawner
 		
 	function start()
 		spawnTimer.start(1., function Spawner.spawnUnits).setData(this castTo int)
-		print("started")
 		
 	function stop()
 		spawnTimer.release()

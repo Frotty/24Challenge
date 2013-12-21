@@ -1,33 +1,44 @@
 package MirrorRocket
-
+import Terrain
 import Entity
 import Hero
 import ProjectileWithCollision
 import LinkedList
 
+
+
 public class MirrorRocket extends ProjectileWithCollision
 	unit sample // This is what the missile facing is based on
 	angle facing
 	real spd
+	real dmg
 	
-	construct(vec3 pos, real radius, unit hero,real speed,real time, angle xyAngle, string fxpath)
+	construct(vec3 pos, real radius, unit hero,real speed,real time, angle xyAngle, string fxpath, real dmg)
 		super(pos, radius, hero.getOwner(), xyAngle, fxpath)
 		sample = hero
 		spd = speed
+		this.dmg = dmg
 		setSpeed(spd)
 		setTimed(time)
 		
 	function setFacing() returns angle
-		facing = sample.getFacingAngle()+ angle(3.14)
+		facing = sample.getFacingAngle()+ angle(PI)
 		return facing
 	
 	override function onCollision(UnitEntity other)
 		if (owner.isEnemyOf(other.owner))
-			sample.damageTarget(other.actor, 100 * 0.8)
+			AddSpecialEffect("Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilSpecialArt.mdl", pos.x, pos.y).destr()
+			if other instanceof Hero
+				terminate()
+				sample.damageTarget(other.actor, dmg)
+			else
+				sample.damageTarget(other.actor, dmg/10)
+				
 			
 	
 	override function update()
 		setXYAngle(setFacing())
+		pos.z = getTerrainZ(pos.x, pos.y) +20
 		setSpeed(spd)
 		super.update()
 		

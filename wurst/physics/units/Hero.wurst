@@ -2,36 +2,44 @@ package Hero
 import public PhysicalUnitEntity
 import public GameConstants
 import public HeroPick
+import SoundHelper
+import LinkedList
 
-constant int BUFF_RESERVE_MOVEMENT = 'ASDF'
+Sound array killSounds
+
+LinkedList<int> intPool = new LinkedList<int>()
+
+constant int BUFF_REVERSE_MOVEMENT = 'ASDF'
 
 public abstract class Hero extends PhysicalUnitEntity
 	vec3 lastPos
 	boolean userorder = true
 	static trigger castTrig = CreateTrigger()
 	static trigger orderTrig = CreateTrigger()
+	static trigger deathTrig = CreateTrigger()
 	
 	construct(vec3 pos, unit u)
 		super(pos, u)
 		castTrig.registerUnitEvent(actor, EVENT_UNIT_SPELL_EFFECT)
 		orderTrig.registerUnitEvent(actor, EVENT_UNIT_ISSUED_POINT_ORDER)
 		orderTrig.registerUnitEvent(actor, EVENT_UNIT_ISSUED_TARGET_ORDER)
+		deathTrig.registerUnitEvent(actor, EVENT_UNIT_DEATH)
 		
 	static function evaluateCast()
 		let u = GetTriggerUnit()
 		let data = u.getUserData() castTo Hero
-		data.onCast(GetSpellAbilityId(), vec2(GetSpellTargetX(), GetSpellTargetY()), GetSpellTargetUnit())
+		data.onCast(GetSpellAbilityId(), vec2(GetSpellTargetX(), GetSpellTargetY()), GetSpellTargetUnit(), GetUnitAbilityLevel(u, GetSpellAbilityId()))
 	
-	abstract function onCast(int id, vec2 tpos, unit target)
+	abstract function onCast(int id, vec2 tpos, unit target, int lvl)
 	
 	static function evaluateOrder()
-		if(true)//GetTriggerUnit().hasAbility(BUFF_RESERVE_MOVEMENT))
+		if(GetTriggerUnit().hasAbility(BUFF_REVERSE_MOVEMENT))
 			let u = GetTriggerUnit()
 			let data = u.getUserData() castTo Hero
 			data.onIssuedOrder(GetIssuedOrderId(), vec2(GetOrderPointX(),GetOrderPointY()))
 			
 	function onIssuedOrder(int id, vec2 target)
-		if (userorder) //possible bug: first order isnt reserved
+		if (userorder) //possible bug: first order isnt reversed
 			userorder = false
 			actor.issuePointOrderById(id, pos.toVec2()-(target-pos.toVec2()))
 		else
@@ -39,9 +47,43 @@ public abstract class Hero extends PhysicalUnitEntity
 	
 		
 			
-
-
+function onHeroDeath()
+	let ddata = GetTriggerUnit().getUserData() castTo Hero
+	let adata = GetKillingUnit().getUserData() castTo Hero
+	let rnd = GetRandomInt(0,intPool.getSize())
+	killSounds[intPool.get(rnd)].play()
+	intPool.removeAt(rnd)
+	if intPool.getSize() == 0
+		intPool.add(0)
+		intPool.add(1)
+		intPool.add(2)
+		intPool.add(3)
+		intPool.add(4)
+		intPool.add(5)
+		intPool.add(6)
+		intPool.add(7)
+	DisplayTimedTextToForce(GetPlayersAll(), 15, colorcode[adata.owner.getId()] + adata.owner.getName() + "|r killed " + colorcode[ddata.owner.getId()] + ddata.owner.getName() )
 
 init
 	Hero.castTrig.addAction(function Hero.evaluateCast)
 	Hero.orderTrig.addAction(function Hero.evaluateOrder)
+	Hero.deathTrig.addAction(function onHeroDeath)
+
+public function initHeroes()
+	killSounds[0] = new Sound("sounds\\almostKillingspree.mp3", 2096, false)
+	killSounds[1] = new Sound("sounds\\fuckedUp.mp3", 2346, false)
+	killSounds[2] = new Sound("sounds\\killFrenzy.mp3", 2616, false)
+	killSounds[3] = new Sound("sounds\\nein.mp3", 2460, false)
+	killSounds[4] = new Sound("sounds\\SerbianXaXa.mp3", 3916, false)
+	killSounds[5] = new Sound("sounds\\stopMe.mp3", 4046, false)
+	killSounds[6] = new Sound("sounds\\toasted.mp3", 1628, false)
+	killSounds[7] = new Sound("sounds\\youSuck.mp3", 2330, false)
+	intPool.add(0)
+	intPool.add(1)
+	intPool.add(2)
+	intPool.add(3)
+	intPool.add(4)
+	intPool.add(5)
+	intPool.add(6)
+	intPool.add(7)
+	

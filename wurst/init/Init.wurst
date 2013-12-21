@@ -6,7 +6,9 @@ import Debug
 import CreepNode
 import CreepSpawn
 import PreloadList
-import Mimic
+import PlayerData
+import MimicHero
+import HeroPick
 
 vec2 startpos = vec2(-6144,3584)
 
@@ -16,6 +18,8 @@ function initGame()
 	initCreepNodes()
 	print("|cff5A5A5A[Init] |r- CreepSpawners")
 	initCreepSpawners()
+	print("|cff5A5A5A[Init] |r- Heros")
+	createPickableHeroes()
 	// Starting
 	print("|cff5A835A[Start] |r- Entity Loop")
 	startEntityLoop()
@@ -25,29 +29,39 @@ function initGame()
 	startNewRound()
 	print("|cff5A835A[Start] |r- Debug")
 	startDebug()
-	print("done")
+	getTimer().startPeriodic(1., function updateBoard)
+	print("|cffFF9421[Done] |r- Game initialized")
 	
 function initPreload()
 	print(msg)
 	FogEnable(false)
 	FogMaskEnable(false)
 	preloadAll()
-	print("init ")
-	print("init Game done")
 	
 function preloadFinished()
 	FogEnable(true)
 	FogMaskEnable(true)
 	print(msg + " finished!")
+	for p in players
+		if p.id < 4
+			if GetLocalPlayer() == p.p
+				CameraSetupApplyForceDuration(gg_cam_ColorStartCam, true, 2.)
+				SelectUnit(gg_unit_h000_0000, true)
+		else
+			if GetLocalPlayer() == p.p
+				CameraSetupApplyForceDuration(gg_cam_BWStartCam, true, 2.)
+				SelectUnit(gg_unit_h001_0001, true)
+				
 	initGame()
 	
 
 string msg = "|cffA5A5A5Preloading"
 real farz = 500
+
 function preloadNote()
 	CameraSetupApplyForceDuration(gg_cam_InitCam, true, 0.)
 	CameraSetupSetField(gg_cam_InitCam, CAMERA_FIELD_FARZ, farz, 1. )
-	farz += 50.
+	farz += 150.
 	if farz > 9000
 		GetExpiredTimer().release()
 		preloadFinished()
@@ -55,6 +69,4 @@ function preloadNote()
 init
 	getTimer().start(0.01, function initPreload)
 	getTimer().startPeriodic(ANIMATION_PERIOD, function preloadNote)
-	Mimic hero = new Mimic(vec3(1800,-2800,700), createUnit(Player(1),'H002', vec2(1800,-2800), angle(0)) )
-	//hero = new Mimic(vec3(2400,-2000,700), createUnit(Player(6),'H002', vec2(2400,-2000), angle(0)) )
-	
+	CameraSetupApplyForceDuration(gg_cam_InitCam, true, 0.)

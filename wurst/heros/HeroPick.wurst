@@ -1,48 +1,39 @@
 package HeroPick
-import LinkedList
+import MimicHero
+import PlayerData
+trigger buyTrig
 
-LinkedList<int> attackIds = new LinkedList<int>()
-LinkedList<int> defendIds = new LinkedList<int>()
-LinkedList<unit> excess = new LinkedList<unit>()
 
-constant real distance = 128.
-vec2 attackPos = vec2(-6000,2800)
-vec2 defendPos = vec2(5400,2800)
-
-public function addToAttackPool(int id)
-	attackIds.add(id)
-	
-public function addToDefendPool(int id)
-	defendIds.add(id)
-	
 public function createPickableHeroes()
 	createAttackerHeroes()
 	createDefenderHeroes()
-	
+	for p in players
+		if p.id < 4
+			p.pickdum = createUnit(p.p, DUMMY_UNIT_ID, gg_unit_h000_0000.getPos(), angle(0))
+		else
+			p.pickdum = createUnit(p.p, DUMMY_UNIT_ID, gg_unit_h001_0001.getPos(), angle(0))
+			
 function createAttackerHeroes()
-	boolean even = attackIds.getSize() % 2 == 0
-	int negHalfSize = -(attackIds.getSize() div 2)
-	real y = 0
-	if even
-		y = -64 + distance * (negHalfSize-1)
-	else
-		y = distance * (negHalfSize)
-		
-	for id in attackIds
-		createUnit(DUMMY_PLAYER, id, vec2(attackPos.x, attackPos.y+y), angle(0))
-		y += distance
-		
+	AddUnitToStock(gg_unit_h000_0000, MIMIC_HERO_ID, 3, 3)
+
 function createDefenderHeroes()
-	boolean even = attackIds.getSize() % 2 == 0
-	int negHalfSize = -(attackIds.getSize() div 2)
-	real y = 0
-	if even
-		y = -64 + distance * (negHalfSize-1)
-	else
-		y = distance * (negHalfSize)
-		
-	for id in attackIds
-		createUnit(DUMMY_PLAYER, id, vec2(defendPos.x, defendPos.y+y), (180).asAngleDegrees())
-		y += distance
-		
+	AddUnitToStock(gg_unit_h001_0001, MIMIC_HERO_ID, 3, 3)
 	
+function onHeroBuy()
+	let p = GetTriggerPlayer()
+	let u = GetSoldUnit()
+	let id = u.getTypeId()
+	Hero h = null
+	pData[p.getId()].pickdum.remove()
+	switch id
+		case MIMIC_HERO_ID
+			h = new Mimic(u.getPos3fake(), u.getOwner())
+			
+	SelectUnitForPlayerSingle(h.actor, h.owner)
+	u.remove()
+	
+init
+	buyTrig = CreateTrigger()
+	buyTrig.registerUnitEvent(gg_unit_h000_0000, EVENT_UNIT_SELL)
+	buyTrig.registerUnitEvent(gg_unit_h001_0001, EVENT_UNIT_SELL)
+	buyTrig.addAction(function onHeroBuy)

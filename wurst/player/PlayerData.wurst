@@ -17,7 +17,7 @@ public class PlayerData //just the player's (constant) stuff
 	string mbname //Basically the output name
 	string icon = "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp"
 	boolean left = false
-	
+	unit pickdum
 	int deaths = 0
 	int XP = 40
 	effect lvlfx
@@ -27,12 +27,13 @@ public class PlayerData //just the player's (constant) stuff
 
 	construct (player p)
 		this.p = p
-		
 		id = GetPlayerId(p)
+		pData[id] = this
 		gameId = players.getSize()
 		name = GetPlayerName(p)
 		mbname = colorcode[ id ] + mbname
 		players.add(this)
+		p.addLumber(1)
 
 			
 	function setMBRow()
