@@ -8,6 +8,7 @@ import CreepSpawn
 import PreloadList
 import PlayerData
 import MimicHero
+import HeroPick
 
 vec2 startpos = vec2(-6144,3584)
 
@@ -17,6 +18,8 @@ function initGame()
 	initCreepNodes()
 	print("|cff5A5A5A[Init] |r- CreepSpawners")
 	initCreepSpawners()
+	print("|cff5A5A5A[Init] |r- Heros")
+	createPickableHeroes()
 	// Starting
 	print("|cff5A835A[Start] |r- Entity Loop")
 	startEntityLoop()
@@ -48,6 +51,7 @@ function preloadFinished()
 			if GetLocalPlayer() == p.p
 				CameraSetupApplyForceDuration(gg_cam_BWStartCam, true, 2.)
 				SelectUnit(gg_unit_h001_0001, true)
+				
 	initGame()
 	
 
@@ -65,6 +69,5 @@ function preloadNote()
 init
 	getTimer().start(0.01, function initPreload)
 	getTimer().startPeriodic(ANIMATION_PERIOD, function preloadNote)
-	Mimic hero = new Mimic(vec3(1800,-2800,700), Player(1) )
-	//hero = new Mimic(vec3(2400,-2000,700), createUnit(Player(6),'H002', vec2(2400,-2000), angle(0)) )
+	CameraSetupApplyForceDuration(gg_cam_InitCam, true, 0.)
 	

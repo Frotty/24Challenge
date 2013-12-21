@@ -1,17 +1,39 @@
 package HeroPick
 import MimicHero
+import PlayerData
 trigger buyTrig
+
 
 public function createPickableHeroes()
 	createAttackerHeroes()
 	createDefenderHeroes()
-	
-
+	for p in players
+		if p.id < 4
+			p.pickdum = createUnit(p.p, DUMMY_UNIT_ID, gg_unit_h000_0000.getPos(), angle(0))
+		else
+			p.pickdum = createUnit(p.p, DUMMY_UNIT_ID, gg_unit_h001_0001.getPos(), angle(0))
+			
 function createAttackerHeroes()
 	AddUnitToStock(gg_unit_h000_0000, MIMIC_HERO_ID, 3, 3)
 
 function createDefenderHeroes()
 	AddUnitToStock(gg_unit_h001_0001, MIMIC_HERO_ID, 3, 3)
 	
+function onHeroBuy()
+	let p = GetTriggerPlayer()
+	let u = GetSoldUnit()
+	let id = u.getTypeId()
+	Hero h = null
+	pData[p.getId()].pickdum.remove()
+	switch id
+		case MIMIC_HERO_ID
+			h = new Mimic(u.getPos3fake(), u.getOwner())
+			
+	SelectUnitForPlayerSingle(h.actor, h.owner)
+	u.remove()
+	
 init
 	buyTrig = CreateTrigger()
+	buyTrig.registerUnitEvent(gg_unit_h000_0000, EVENT_UNIT_SELL)
+	buyTrig.registerUnitEvent(gg_unit_h001_0001, EVENT_UNIT_SELL)
+	buyTrig.addAction(function onHeroBuy)

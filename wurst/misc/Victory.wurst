@@ -1,0 +1,29 @@
+package Victory
+import GameConstants
+import PlayerData
+
+trigger deathTrig
+	
+function onDeath()
+	let u = GetTriggerUnit()
+	let owner = u.getOwner()
+
+	if owner == TEAM_TWO_CPU
+		for p in players
+			if p.id < 4
+				CustomVictoryBJ(p.p, true, false)
+			else
+				CustomDefeatBJ(p.p, "YOU LOSE!!")
+	else
+		for p in players
+			if p.id > 3
+				CustomVictoryBJ(p.p, true, false)
+			else
+				CustomDefeatBJ(p.p, "YOU LOSE!!")
+
+	
+init
+	deathTrig = CreateTrigger()
+	deathTrig.registerUnitEvent(gg_unit_h000_0000, EVENT_UNIT_DEATH)
+	deathTrig.registerUnitEvent(gg_unit_h001_0001, EVENT_UNIT_DEATH)
+	deathTrig.addAction(function onDeath)

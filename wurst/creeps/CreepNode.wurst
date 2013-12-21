@@ -31,6 +31,7 @@ public class CreepNode
 		this.creepOwner = creepOwner
 		inrangeDummy = createUnit(DUMMY_PLAYER, DUMMY_UNIT_ID, dummyNode.getPos3fake(), angle(0))
 		inrangeDummy.setUserData(this castTo int)
+		inrangeDummy.hide()
 		t.registerUnitInRangeSource(inrangeDummy, radius)
 		t.addAction(function CreepNode.orderAttack)
 		

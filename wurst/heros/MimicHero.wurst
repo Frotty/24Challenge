@@ -1,6 +1,6 @@
 package MimicHero
-
-import Hero
+import PreloadList
+import public Hero
 import MirrorRocket
 
 constant int MIRROR_ROCKET_ID = 'A000'
@@ -12,11 +12,14 @@ public class Mimic extends Hero
 	construct(vec3 pos, player owner)
 		super(pos, createUnit(owner, MIMIC_HERO_ID, pos, angle(0)))
 		
-	override function onCast(int id, vec2 tpos, unit target)
+	override function onCast(int id, vec2 tpos, unit target, int lvl)
 		switch id
 			case MIRROR_ROCKET_ID
 				print("Casted")
-				new MirrorRocket(pos+ vec3(0,0,50), 20., actor, 8., 60., actor.getFacingAngle()+ angle(3.14), "Abilities\\Weapons\\IllidanMissile\\IllidanMissile.mdl")
+				new MirrorRocket(pos+ vec3(0,0,50), 40., actor, 8., 60., actor.getFacingAngle()+ angle(PI), "Abilities\\Weapons\\IllidanMissile\\IllidanMissile.mdl", 120.*lvl )
 			default
 				print("not casted")
 		
+init
+	addToPreload(MIMIC_HERO_ID, PreloadType.UNIT)
+	addToPreload(MIRROR_ROCKET_ID, PreloadType.SPELL)
