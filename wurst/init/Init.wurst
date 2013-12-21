@@ -1,0 +1,56 @@
+package Init
+import EntityManagement
+import Test
+import Round
+import Debug
+import CreepNode
+import CreepSpawn
+import PreloadList
+
+vec2 startpos = vec2(-6144,3584)
+
+function initGame()
+	// Inits
+	print("|cff5A5A5A[Init] |r- CreepNodes")
+	initCreepNodes()
+	print("|cff5A5A5A[Init] |r- CreepSpawners")
+	initCreepSpawners()
+	// Starting
+	print("|cff5A835A[Start] |r- Entity Loop")
+	startEntityLoop()
+	print("|cff5A835A[Start] |r- Test")
+	startTest()
+	print("|cff5A835A[Start] |r- New Round")
+	startNewRound()
+	print("|cff5A835A[Start] |r- Debug")
+	startDebug()
+	print("done")
+	
+function initPreload()
+	print(msg)
+	FogEnable(false)
+	FogMaskEnable(false)
+	preloadAll()
+	print("init ")
+	print("init Game done")
+	
+function preloadFinished()
+	FogEnable(true)
+	FogMaskEnable(true)
+	print(msg + " finished!")
+	initGame()
+	
+
+string msg = "|cffA5A5A5Preloading"
+real farz = 500
+function preloadNote()
+	CameraSetupApplyForceDuration(gg_cam_InitCam, true, 0.)
+	CameraSetupSetField(gg_cam_InitCam, CAMERA_FIELD_FARZ, farz, 1. )
+	farz += 50.
+	if farz > 9000
+		GetExpiredTimer().release()
+		preloadFinished()
+	
+init
+	getTimer().start(0.01, function initPreload)
+	getTimer().startPeriodic(ANIMATION_PERIOD, function preloadNote)

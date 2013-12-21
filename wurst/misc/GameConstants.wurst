@@ -1,0 +1,27 @@
+package GameConstants
+
+	public constant player TEAM_ONE_CPU = Player(0)
+	public constant player TEAM_TWO_CPU = Player(4)
+
+
+	public vec3 gravity = vec3(0,0,-0.8)
+	public string array colorcode
+	public constant int cplayerCount = 13
+	
+	public constant string MAP_VER = "CA 0.001a"
+
+	init
+		colorcode[ 0 ] = "|cffFF0202" // rot
+		colorcode[ 1 ] = "|cff0041FF" // blau
+		colorcode[ 2 ] = "|cff1BE6B8" // teal
+		colorcode[ 3 ] = "|cff530080" // lila
+		colorcode[ 4 ] = "|cffFFFC00" // gelb
+		colorcode[ 5 ] = "|cffFE890D" // orange
+		colorcode[ 6 ] = "|cff1FBF00" // gruen
+		colorcode[ 7 ] = "|cffE55AAF" // pink
+		colorcode[ 8 ] = "|cff949596" // grau
+		colorcode[ 9 ] = "|cff7DBEF1" // hellblau
+		colorcode[ 10 ] = "|cff0F6145" 
+
+
+endpackage 
