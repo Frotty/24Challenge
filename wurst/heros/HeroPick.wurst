@@ -1,5 +1,5 @@
 package HeroPick
-
+import MimicHero
 trigger buyTrig
 
 public function createPickableHeroes()
@@ -8,10 +8,10 @@ public function createPickableHeroes()
 	
 
 function createAttackerHeroes()
-	AddUnitToStock(gg_unit_h000_0000, id, 3, 3)
+	AddUnitToStock(gg_unit_h000_0000, MIMIC_HERO_ID, 3, 3)
 
 function createDefenderHeroes()
-	AddUnitToStock(gg_unit_h001_0001, id, 3, 3)
+	AddUnitToStock(gg_unit_h001_0001, MIMIC_HERO_ID, 3, 3)
 	
 init
 	buyTrig = CreateTrigger()
