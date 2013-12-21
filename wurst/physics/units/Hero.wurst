@@ -3,13 +3,19 @@ import public PhysicalUnitEntity
 import public GameConstants
 import public HeroPick
 
+constant int BUFF_RESERVE_MOVEMENT = 'ASDF'
+
 public abstract class Hero extends PhysicalUnitEntity
 	vec3 lastPos
+	boolean userorder = true
 	static trigger castTrig = CreateTrigger()
+	static trigger orderTrig = CreateTrigger()
 	
 	construct(vec3 pos, unit u)
 		super(pos, u)
 		castTrig.registerUnitEvent(actor, EVENT_UNIT_SPELL_EFFECT)
+		orderTrig.registerUnitEvent(actor, EVENT_UNIT_ISSUED_POINT_ORDER)
+		orderTrig.registerUnitEvent(actor, EVENT_UNIT_ISSUED_TARGET_ORDER)
 		
 	static function evaluateCast()
 		let u = GetTriggerUnit()
@@ -17,6 +23,25 @@ public abstract class Hero extends PhysicalUnitEntity
 		data.onCast(GetSpellAbilityId(), vec2(GetSpellTargetX(), GetSpellTargetY()), GetSpellTargetUnit())
 	
 	abstract function onCast(int id, vec2 tpos, unit target)
+	
+	static function evaluateOrder()
+		if(true)//GetTriggerUnit().hasAbility(BUFF_RESERVE_MOVEMENT))
+			let u = GetTriggerUnit()
+			let data = u.getUserData() castTo Hero
+			data.onIssuedOrder(GetIssuedOrderId(), vec2(GetOrderPointX(),GetOrderPointY()))
+			
+	function onIssuedOrder(int id, vec2 target)
+		if (userorder) //possible bug: first order isnt reserved
+			userorder = false
+			actor.issuePointOrderById(id, pos.toVec2()-(target-pos.toVec2()))
+		else
+			userorder = true
+	
+		
+			
+
+
 
 init
 	Hero.castTrig.addAction(function Hero.evaluateCast)
+	Hero.orderTrig.addAction(function Hero.evaluateOrder)
