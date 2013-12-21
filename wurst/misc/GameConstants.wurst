@@ -8,7 +8,7 @@ package GameConstants
 	public string array colorcode
 	public constant int cplayerCount = 13
 	
-	public constant string MAP_VER = "CA 0.001a"
+	public constant string MAP_VER = "Crap AoS"
 
 	init
 		colorcode[ 0 ] = "|cffFF0202" // rot

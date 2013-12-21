@@ -28,7 +28,7 @@ function onHeroBuy()
 		case MIMIC_HERO_ID
 			pData[p.getId()].hero = new Mimic(u.getPos3fake(), u.getOwner())
 			
-	SelectUnitForPlayerSingle(pData[p.getId()].hero.actor, p)
+	SelectUnitForPlayerSingle(pData[p.getId()].hero.actor, u.getOwner())
 	u.remove()
 	
 init

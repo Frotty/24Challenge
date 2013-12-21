@@ -4,6 +4,7 @@ import public GameConstants
 import public HeroPick
 import SoundHelper
 import LinkedList
+import PlayerData
 
 Sound array killSounds
 
@@ -59,12 +60,17 @@ function revive()
 	let data = tim.getData() castTo Hero
 	if data.owner.getId() < 4
 		ReviveHero(data.actor, gg_unit_h000_0000.getX(),gg_unit_h000_0000.getY(), true)
+		CameraSetupApplyForceDuration(gg_cam_ColorStartCam, true, 2.)
 	else
 		ReviveHero(data.actor, gg_unit_h001_0001.getX(),gg_unit_h001_0001.getY(), true)
+		CameraSetupApplyForceDuration(gg_cam_BWStartCam, true, 2.)
+	SelectUnitForPlayerSingle(data.actor, data.owner)
+	DestroyTimerDialog(pData[data.owner.getId()].td)
+	tim.release()
 			
 function onHeroDeath()
 	let ddata = GetTriggerUnit().getUserData() castTo Hero
-	let adata = GetKillingUnit().getUserData() castTo Hero
+	let killer = GetKillingUnit()
 	let rnd = GetRandomInt(0,intPool.getSize())
 	killSounds[intPool.get(rnd)].play()
 	intPool.removeAt(rnd)
@@ -77,8 +83,9 @@ function onHeroDeath()
 		intPool.add(5)
 		intPool.add(6)
 		intPool.add(7)
-	DisplayTimedTextToForce(GetPlayersAll(), 15, colorcode[adata.owner.getId()] + adata.owner.getName() + "|r killed " + colorcode[ddata.owner.getId()] + ddata.owner.getName() )
-	getTimer().start((10 + 5. * GetHeroLevel(ddata.actor)), function revive).setData(ddata castTo int)
+	DisplayTimedTextToForce(GetPlayersAll(), 15, colorcode[killer.getOwner().getId()] + killer.getOwner().getName() + "|r killed " + colorcode[ddata.owner.getId()] + ddata.owner.getName() )
+	pData[ddata.owner.getId()].tim = getTimer().start((10 + 5. * GetHeroLevel(ddata.actor)), function revive).setData(ddata castTo int)
+	pData[ddata.owner.getId()].td = CreateTimerDialog(pData[ddata.owner.getId()].tim)
 
 
 init

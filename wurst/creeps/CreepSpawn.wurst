@@ -33,15 +33,13 @@ public class Spawner
 		this.owner = owner
 		pos.z = getTerrainZ(pos.x, pos.y) + 5.
 		spawnTimer = getTimer()
+		spawnDummy.setUserData(this castTo int)
 		
 	static function spawnUnits()
 		let tim = GetExpiredTimer()
 		let data = tim.getData() castTo Spawner
 		if data.spawnDummy.getHP() > .405
 			tim.start(0.5, function spawnMelee).setData(data castTo int)
-			if data.spawnCount > 2
-				getTimer().start(5., function spawnCatapults).setData(data castTo int)
-				data.spawnCount = 0
 			data.spawnCount++
 		else
 			tim.release()
@@ -66,14 +64,13 @@ public class Spawner
 		if data.rangedCount > 0
 			tim.start(.75, function spawnRanged)
 		else
-			tim.start(55., spawnUnitsCall)
+			tim.start(40., spawnUnitsCall)
 			data.rangedCount = 2
 			
 			
-	static function spawnCatapults()
-		let tim = GetExpiredTimer()
-		let data = tim.getData() castTo Spawner
-		tim.release()
+	ondestroy
+		stop()
+		
 		
 	function start()
 		spawnTimer.start(1., function Spawner.spawnUnits).setData(this castTo int)
@@ -94,16 +91,28 @@ public function initCreepSpawners()
 	initColorSpawns()
 	
 function initBWSpawns()
+	deathTrig.registerUnitEvent(gg_unit_e002_0015, EVENT_UNIT_DEATH)
+	deathTrig.registerUnitEvent(gg_unit_e002_0014, EVENT_UNIT_DEATH)
 	color_left_spawn = new Spawner(gg_unit_e002_0015, TEAM_ONE_CPU)
 	color_left_spawn.target = node_color_left 
 	color_right_spawn = new Spawner(gg_unit_e002_0014, TEAM_ONE_CPU)
 	color_right_spawn.target = node_color_right
 	
 function initColorSpawns()
+	deathTrig.registerUnitEvent(gg_unit_e002_0016, EVENT_UNIT_DEATH)
+	deathTrig.registerUnitEvent(gg_unit_e002_0017, EVENT_UNIT_DEATH)
 	bw_left_spawn = new Spawner(gg_unit_e002_0016, TEAM_TWO_CPU)
 	bw_left_spawn.target = node_bw_left 
 	bw_right_spawn = new Spawner(gg_unit_e002_0017, TEAM_TWO_CPU)
 	bw_right_spawn.target = node_bw_right
 
+trigger deathTrig = CreateTrigger()
+
+function onSpawnDeath()
+	let data = GetTriggerUnit().getUserData() castTo Spawner
+	destroy data
+	
+init
+	deathTrig.addAction(function onSpawnDeath)
 
 	

@@ -20,6 +20,7 @@ function initGame()
 	initCreepSpawners()
 	print("|cff5A5A5A[Init] |r- Heros")
 	createPickableHeroes()
+	initHeroes()
 	// Starting
 	print("|cff5A835A[Start] |r- Entity Loop")
 	startEntityLoop()

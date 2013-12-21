@@ -21,7 +21,7 @@ public class Mimic extends Hero
 		switch id
 			case MIRROR_ROCKET_ID
 				print("Casted")
-				new MirrorRocket(pos+ vec3(0,0,50), 40., actor, 8., 60., actor.getFacingAngle()+ angle(PI), "Abilities\\Weapons\\IllidanMissile\\IllidanMissile.mdl", 120.*lvl )
+				new MirrorRocket(pos+ vec3(0,0,50), 40., actor, 8., 2. + 2. * lvl, actor.getFacingAngle()+ angle(PI), "Abilities\\Weapons\\IllidanMissile\\IllidanMissile.mdl", 120.*lvl )
 			case REVERSE_ROUTING_ID
 				print("casted rr")
 				rr_temp = tpos
