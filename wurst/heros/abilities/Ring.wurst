@@ -1,0 +1,36 @@
+package Ring
+
+import Entity
+import CollisionModule
+import LinkedList
+import TempGroups
+
+constant int BUFF_INSIDE = 'EEEE'
+
+public class Ring extends FxEntity
+	use CollisionModule
+	LinkedList<unit> unitsinside = new LinkedList<unit>()
+	
+	
+	construct( vec3 pos, real radius, player owner, angle xyAngle, string sfxpath ) //Abilities\\Spells\\Orc\\LiquidFire\\Liquidfire.mdl
+		super(pos, radius, owner, xyAngle, sfxpath )
+		checkForCollisions(pos.toVec2())
+		for unit u in ENUM_GROUP
+			unitsinside.add(u)
+		
+	override function onCollision(UnitEntity other)
+			unitsinside.add(other.actor)
+		
+	
+	override function collisionRadius() returns real
+		return radius
+		
+	override function update()
+		for unit u in unitsinside
+			if distanceBetweenCoords(pos.x,pos.y,u.getX(),u.getY()) > radius
+				unitsinside.remove(u)
+				let entity = UnitEntity.getForUnit(GetFilterUnit())
+				if entity != null
+					entity.pos = pos-(entity.pos-pos)
+		super.update()
+	
