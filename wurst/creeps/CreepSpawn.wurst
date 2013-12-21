@@ -1,6 +1,5 @@
 package CreepSpawn
 import CreepNode
-import LinkedList
 import Terrain
 import GameConstants
 import Creep
