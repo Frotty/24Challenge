@@ -23,9 +23,10 @@ public module CollisionModule
 	
 	private static constant enumFilter = Condition(function enumFilter)
 	private static function enumFilter() returns boolean
-		let entity = UnitEntity.getForUnit(GetFilterUnit())
-		if entity != null
-			temp.onCollision(entity)
+		if GetFilterUnit().isAlive()
+			let entity = UnitEntity.getForUnit(GetFilterUnit())
+			if entity != null
+				temp.onCollision(entity)
 		return false
 	
 		
