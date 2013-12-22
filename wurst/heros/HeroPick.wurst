@@ -20,8 +20,8 @@ function createDefenderHeroes()
 	AddUnitToStock(gg_unit_h001_0001, MIMIC_HERO_ID, 5, 5)
 	
 function onHeroBuy()
-	let p = GetTriggerPlayer()
 	let u = GetSoldUnit()
+	let p = u.getOwner()
 	let id = u.getTypeId()
 	pData[p.getId()].pickdum.remove()
 	switch id
