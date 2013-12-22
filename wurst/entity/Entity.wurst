@@ -140,6 +140,7 @@ abstract public class UnitEntity extends Entity
 	function onAttack(UnitEntity victim)
 		
 	ondestroy
+		actor.setUserData(0)
 		unitEntityCount++
 
 abstract public class FxEntity extends Entity

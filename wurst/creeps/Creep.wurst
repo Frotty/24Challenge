@@ -10,10 +10,10 @@ public class Creep extends PhysicalUnitEntity
 		actor.issuePointOrder("attack", target)
 		deathTrig.registerUnitEvent(actor, EVENT_UNIT_DEATH)
 		
-
 function onDeath()
 	let data = UnitEntity.getForUnit(GetTriggerUnit())
-	data.terminate()
+	if data != null
+		data.terminate()
 
 init
 	Creep.deathTrig.addAction(function onDeath)
