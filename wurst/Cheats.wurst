@@ -1,0 +1,22 @@
+package Cheats
+
+import Hero
+import PlayerData
+
+init
+	let t = CreateTrigger()
+	for i = 0 to 12
+		TriggerRegisterPlayerChatEvent(t, Player(i), "-", false)
+	t.addAction(function cheat)
+	
+function cheat()
+	switch GetEventPlayerChatString()
+		case "-peq"
+			let p = pData[GetTriggerPlayer().getId()]
+			let u = p.hero.actor
+			SetHeroLevel(u, GetHeroLevel(u)+1, true)
+			
+function err()
+	error("fuck you")
+					
+	
