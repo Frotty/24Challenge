@@ -39,7 +39,7 @@ public class Spawner
 		let tim = GetExpiredTimer()
 		let data = tim.getData() castTo Spawner
 		if data.spawnDummy.getHP() > .405
-			tim.start(0.5, function spawnMelee).setData(data castTo int)
+			tim..start(0.5, function spawnMelee)..setData(data castTo int)
 			data.spawnCount++
 		else
 			tim.release()
@@ -73,7 +73,7 @@ public class Spawner
 		
 		
 	function start()
-		spawnTimer.start(1., function Spawner.spawnUnits).setData(this castTo int)
+		spawnTimer..start(1., function Spawner.spawnUnits)..setData(this castTo int)
 		
 	function stop()
 		spawnTimer.release()

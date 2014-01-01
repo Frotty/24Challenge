@@ -26,9 +26,9 @@ public function startNewRound()
 function startWarmup()
 	warmupRunning = true
 	warmupColorTrig = CreateTrigger()
-	warmupColorTrig.addAction(function leaveWarmupColor).registerRectLeaveEventSource(gg_rct_warmupColor)
+	warmupColorTrig..addAction(function leaveWarmupColor)..registerRectLeaveEventSource(gg_rct_warmupColor)
 	warmupBWTrig = CreateTrigger()
-	warmupBWTrig.addAction(function leaveWarmupBW).registerRectLeaveEventSource(gg_rct_warmupBW)
+	warmupBWTrig..addAction(function leaveWarmupBW)..registerRectLeaveEventSource(gg_rct_warmupBW)
 	print("|cff5A835A[Start] |r- 20 second Warmup has started")
 	getTimer().start(WARUMP_TIME, function finishWarmup)
 	

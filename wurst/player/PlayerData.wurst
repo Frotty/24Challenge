@@ -73,11 +73,11 @@ function initMB()
 	playerboard = new Board(playercount+1,1)
 	
 	for i = 0 to players.getSize()
-		playerboard.board.getItem(i,0).setStyle(true,true).setWidth(0.1)
+		playerboard.board.getItem(i,0)..setStyle(true,true)..setWidth(0.1)
 	for pd in players
 		pd.setMBRow()
 	CameraSetSmoothingFactor(10.)
-	playerboard.board.getItem(0,0).setStyle(true,false).setWidth(0.1)
+	playerboard.board.getItem(0,0)..setStyle(true,false)..setWidth(0.1)
 	playerboard.setItemContent(0,0,"Player",null)
 	playerboard.board.display(true)
 	debugPrint("mbinit done", 2)
